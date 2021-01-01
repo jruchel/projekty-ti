@@ -13,7 +13,6 @@ export default {
   name: "MatrixRow",
   props: ["width"],
   mounted() {
-    console.log(this.width)
     while (this.cells.length < this.width) {
       this.addCell()
     }
@@ -23,8 +22,6 @@ export default {
       return this.cells
     },
     setCells(cells) {
-      console.log("old cells: " + this.cells)
-      console.log("new cells: " + cells)
       this.cells = cells
     },
     readRow() {

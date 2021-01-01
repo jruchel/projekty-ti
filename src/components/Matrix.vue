@@ -33,6 +33,19 @@ export default {
     }
   },
   methods: {
+    setMatrix(matrix) {
+      this.height = matrix.length
+      this.width = matrix[0].length
+      for (let i = 0; i < matrix.length; i++) {
+        let row = matrix[i]
+        let cells = []
+        for (let n = 0; n < row.length; n++) {
+          cells.push({id: n, value: row[n]})
+        }
+        console.log(JSON.stringify(cells))
+        this.$children[i].setCells(cells)
+      }
+    },
     readMatrix() {
       let matrix = []
       for (let i = 0; i < this.$children.length; i++) {

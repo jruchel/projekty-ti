@@ -4,7 +4,13 @@
     <Matrix/>
     <label for="checkbox">Druga macierz</label>
     <input id="checkbox" type="checkbox" v-on:click="onChecked">
-    <Matrix v-if="secondMatrix" :height="readFirstMatrix()[0]" :width="readFirstMatrix()[1]"/>
+    <Matrix v-if="secondMatrix" :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
+    <div id="doubleMatrixMenu" v-if="secondMatrix">
+      <button @click="doSum">Sum</button>
+      <button @click="doSubtract">Subtract</button>
+      <button @click="doMultiply">Multiply</button>
+    </div>
+    <Matrix v-if="secondMatrix" :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
   </div>
 </template>
 
@@ -20,8 +26,31 @@ export default {
     }
   },
   methods: {
-    readFirstMatrix() {
-      return [this.$children[0].height, this.$children[0].width]
+    doMultiply() {
+      let m1 = this.readMatrix(0)
+      let m2 = this.readMatrix(1)
+
+      let result = this.multiplyMatrices(m1, m2)
+      console.log(result)
+      this.$children[2].setMatrix(result)
+    },
+    doSum() {
+      let m1 = this.readMatrix(0)
+      let m2 = this.readMatrix(1)
+      let result = this.sumMatrices(m1, m2)
+      this.$children[2].setMatrix(result)
+    },
+    doSubtract() {
+      let m1 = this.readMatrix(0)
+      let m2 = this.readMatrix(1)
+      let result = this.subtractMatrices(m1, m2)
+      this.$children[2].setMatrix(result)
+    },
+    readMatrixDimensions(n) {
+      return [this.$children[n].height, this.$children[n].width]
+    },
+    readMatrix(n) {
+      return this.$children[n].readMatrix()
     },
     onChecked() {
       this.secondMatrix = !this.secondMatrix
