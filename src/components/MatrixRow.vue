@@ -19,6 +19,9 @@ export default {
     }
   },
   methods: {
+    getCells() {
+      return this.cells
+    },
     setCells(cells) {
       console.log("old cells: " + this.cells)
       console.log("new cells: " + cells)
@@ -52,11 +55,13 @@ export default {
 form {
   display: flex; /* 2. display flex to the rescue */
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   left: 50%;
   bottom: 50%;
 }
 
 input {
-  width: 30px;
+  width: 50px;
 }
 </style>

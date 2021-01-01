@@ -11,6 +11,8 @@
     <br>
     <button @click="displayDeterminant">Determinant</button>
     <button @click="doTransposition">Transpose</button>
+    <button @click="clearMatrix">Clear</button>
+    <button @click="randomizeMatrix">Randomize</button>
   </div>
 </template>
 
@@ -20,6 +22,16 @@ import MatrixRow from "@/components/MatrixRow";
 export default {
   name: "Matrix",
   components: {MatrixRow},
+  mounted() {
+    console.log(this.width)
+    console.log(this.height)
+    if (this.width === null || this.width === 'undefined' || this.width === 0) {
+      this.width = 3;
+    }
+    if (this.height === null || this.height === 'undefined' || this.height === 0) {
+      this.height = 3;
+    }
+  },
   methods: {
     readMatrix() {
       let matrix = []
@@ -28,6 +40,29 @@ export default {
         matrix.push(child.readRow())
       }
       return matrix
+    },
+    clearMatrix() {
+      this.iterate(this.clearCell)
+    },
+    randomizeMatrix() {
+      this.iterate(this.randomizeCell)
+    },
+    randomizeCell(cell) {
+      cell.value = Math.ceil(Math.random() * 100)
+      if (Math.random() * 10 > 5) {
+        cell.value *= -1
+      }
+    },
+    clearCell(cell) {
+      cell.value = 0;
+    },
+    iterate(onEach) {
+      for (let i = 0; i < this.$children.length; i++) {
+        let cells = this.$children[i].getCells()
+        for (let n = 0; n < cells.length; n++) {
+          onEach(cells[n])
+        }
+      }
     },
     displayDeterminant() {
       let result = this.determinant(this.readMatrix())
@@ -359,10 +394,12 @@ export default {
     }
   }
   ,
-  data() {
-    return {
-      height: 1,
-      width: 1
+  props: {
+    width: {
+      default: 3
+    },
+    height: {
+      default: 3
     }
   }
 }
