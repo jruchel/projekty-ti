@@ -1,18 +1,20 @@
 <template>
   <div>
     <div v-for="index in height" :key="index">
-      <MatrixRow :width="width"/>
+      <MatrixRow :editable="editable" :width="width"/>
       <br>
     </div>
-    <button @click="addColumn">Add column</button>
-    <button @click="deleteColumn">Delete column</button>
-    <button @click="addRow">Add row</button>
-    <button @click="deleteRow">Delete row</button>
-    <br>
-    <button @click="displayDeterminant">Determinant</button>
-    <button @click="doTransposition">Transpose</button>
-    <button @click="clearMatrix">Clear</button>
-    <button @click="randomizeMatrix">Randomize</button>
+    <div v-if="editable">
+      <button @click="addColumn">Add column</button>
+      <button @click="deleteColumn">Delete column</button>
+      <button @click="addRow">Add row</button>
+      <button @click="deleteRow">Delete row</button>
+      <br>
+      <button @click="displayDeterminant">Determinant</button>
+      <button @click="doTransposition">Transpose</button>
+      <button @click="clearMatrix">Clear</button>
+      <button @click="randomizeMatrix">Randomize</button>
+    </div>
   </div>
 </template>
 
@@ -42,7 +44,6 @@ export default {
         for (let n = 0; n < row.length; n++) {
           cells.push({id: n, value: row[n]})
         }
-        console.log(JSON.stringify(cells))
         this.$children[i].setCells(cells)
       }
     },
@@ -408,6 +409,9 @@ export default {
   }
   ,
   props: {
+    editable: {
+      default: true
+    },
     width: {
       default: 3
     },

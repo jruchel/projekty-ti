@@ -1,16 +1,21 @@
 <template>
   <div>
     <h1>Into the matrix!</h1>
+    <h4 v-if="secondMatrix">Matrix 1</h4>
     <Matrix/>
     <label for="checkbox">Druga macierz</label>
     <input id="checkbox" type="checkbox" v-on:click="onChecked">
-    <Matrix v-if="secondMatrix" :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
-    <div id="doubleMatrixMenu" v-if="secondMatrix">
+    <div v-if="secondMatrix">
+      <h4>Matrix 2</h4>
+      <Matrix :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
       <button @click="doSum">Sum</button>
       <button @click="doSubtract">Subtract</button>
       <button @click="doMultiply">Multiply</button>
     </div>
-    <Matrix v-if="secondMatrix" :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
+    <div v-if="secondMatrix">
+      <h4>Result</h4>
+      <Matrix :editable="false" :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
+    </div>
   </div>
 </template>
 

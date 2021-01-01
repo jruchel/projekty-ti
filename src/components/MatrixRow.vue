@@ -2,7 +2,7 @@
   <div>
     <form>
       <div class="table-input" v-bind:key="cell.id" v-for="cell in cells">
-        <input class="table-input" type="number" v-model="cell.value">
+        <input :readonly="!editable" class="table-input" type="number" v-model="cell.value">
       </div>
     </form>
   </div>
@@ -11,7 +11,14 @@
 <script>
 export default {
   name: "MatrixRow",
-  props: ["width"],
+  props: {
+    editable: {
+      default: true
+    },
+    width: {
+      default: 3
+    },
+  },
   mounted() {
     while (this.cells.length < this.width) {
       this.addCell()
