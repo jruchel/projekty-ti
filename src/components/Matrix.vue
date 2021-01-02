@@ -4,17 +4,6 @@
       <MatrixRow :editable="editable" :width="width"/>
       <br>
     </div>
-    <div v-if="editable">
-      <button @click="addColumn">Add column</button>
-      <button @click="deleteColumn">Delete column</button>
-      <button @click="addRow">Add row</button>
-      <button @click="deleteRow">Delete row</button>
-      <br>
-      <button @click="displayDeterminant">Determinant</button>
-      <button @click="doTransposition">Transpose</button>
-      <button @click="clearMatrix">Clear</button>
-      <button @click="randomizeMatrix">Randomize</button>
-    </div>
   </div>
 </template>
 
@@ -25,8 +14,6 @@ export default {
   name: "Matrix",
   components: {MatrixRow},
   mounted() {
-    console.log(this.width)
-    console.log(this.height)
     if (this.width === null || this.width === 'undefined' || this.width === 0) {
       this.width = 3;
     }
@@ -77,30 +64,6 @@ export default {
           onEach(cells[n])
         }
       }
-    },
-    displayDeterminant() {
-      let result = this.determinant(this.readMatrix())
-      if (result !== "NaN") {
-        alert("Determinant of this matrix is: " + result)
-      } else {
-        alert("Non square matrices don't have determinants!")
-      }
-    },
-    doTransposition() {
-      let matrix = this.readMatrix()
-      matrix = this.transpone(matrix)
-      for (let i = 0; i < matrix.length; i++) {
-        let row = matrix[i]
-        let cells = []
-        for (let n = 0; n < row.length; n++) {
-          cells.push({id: n, value: row[n]})
-        }
-        console.log(JSON.stringify(cells))
-        this.$children[i].setCells(cells)
-      }
-      let temp = this.width
-      this.width = this.height
-      this.height = temp
     },
     addColumn() {
       this.width++

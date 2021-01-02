@@ -1,30 +1,25 @@
 <template>
   <div>
-    <h1>Into the matrix!</h1>
-    <h4 v-if="secondMatrix">Matrix 1</h4>
-    <Matrix/>
-    <label for="checkbox">Druga macierz</label>
-    <input id="checkbox" type="checkbox" v-on:click="onChecked">
-    <div v-if="secondMatrix">
-      <h4>Matrix 2</h4>
-      <Matrix :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
-      <button @click="doSum">Sum</button>
-      <button @click="doSubtract">Subtract</button>
+    <MatrixDisplay :editable="true" title="Matrix 1"/>
+    <br>
+    <label for="secondMatrixCheckbox">Druga macierz</label>
+    <input id="secondMatrixCheckbox" type="checkbox" v-on:click="onChecked"/>
+    <MatrixDisplay v-if="secondMatrix" :editable="true" title="Matrix 2"/>
+    <div v-if="secondMatrix" id="twoMatricesOperations">
       <button @click="doMultiply">Multiply</button>
+      <button @click="doSum">Add</button>
+      <button @click="doSubtract">Subtract</button>
     </div>
-    <div v-if="secondMatrix">
-      <h4>Result</h4>
-      <Matrix :editable="false" :height="readMatrixDimensions(0)[0]" :width="readMatrixDimensions(0)[1]"/>
-    </div>
+    <MatrixDisplay v-if="secondMatrix" :editable="false" title="Result"/>
   </div>
 </template>
 
 <script>
-import Matrix from "@/components/Matrix";
+import MatrixDisplay from "@/components/MatrixDisplay";
 
 export default {
   name: "IntoTheMatrix",
-  components: {Matrix},
+  components: {MatrixDisplay},
   data() {
     return {
       secondMatrix: false
@@ -36,26 +31,25 @@ export default {
       let m2 = this.readMatrix(1)
 
       let result = this.multiplyMatrices(m1, m2)
-      console.log(result)
-      this.$children[2].setMatrix(result)
+      this.setMatrix(2, result)
     },
     doSum() {
       let m1 = this.readMatrix(0)
       let m2 = this.readMatrix(1)
       let result = this.sumMatrices(m1, m2)
-      this.$children[2].setMatrix(result)
+      this.setMatrix(2, result)
     },
     doSubtract() {
       let m1 = this.readMatrix(0)
       let m2 = this.readMatrix(1)
       let result = this.subtractMatrices(m1, m2)
-      this.$children[2].setMatrix(result)
+      this.setMatrix(2, result)
     },
-    readMatrixDimensions(n) {
-      return [this.$children[n].height, this.$children[n].width]
+    setMatrix(n, matrix) {
+      this.$children[n].getMatrix().setMatrix(matrix)
     },
     readMatrix(n) {
-      return this.$children[n].readMatrix()
+      return this.$children[n].getMatrix().readMatrix()
     },
     onChecked() {
       this.secondMatrix = !this.secondMatrix
